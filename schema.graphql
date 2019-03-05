@@ -1,0 +1,633 @@
+type AddToSubjectsPostsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  postedUnderSubject: Subject
+  postsPost: Post
+  postedUnderSubjectEdge: SubjectEdge
+  postsPostEdge: PostEdge
+}
+
+input AddToSubjectsPostsSubjectInput {
+  postsPostId: ID!
+  postedUnderSubjectId: ID!
+  clientMutationId: String!
+}
+
+input CreatePost {
+  content: String!
+  likes: Int
+  postedUnderId: ID
+  postedUnder: PostpostedUnderSubject
+}
+
+input CreatePostInput {
+  content: String!
+  likes: Int
+  postedUnderId: ID
+  postedUnder: PostpostedUnderSubject
+  clientMutationId: String!
+}
+
+type CreatePostPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  post: Post
+  edge: PostEdge
+  postedUnder: Subject
+}
+
+input CreateSubject {
+  name: String!
+  postsIds: [ID!]
+  posts: [SubjectpostsPost!]
+}
+
+input CreateSubjectInput {
+  name: String!
+  postsIds: [ID!]
+  posts: [SubjectpostsPost!]
+  clientMutationId: String!
+}
+
+type CreateSubjectPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  subject: Subject
+  edge: SubjectEdge
+}
+
+scalar DateTime
+
+input DeletePostInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeletePostPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  post: Post
+  edge: PostEdge
+  postedUnder: Subject
+  deletedId: ID
+}
+
+input DeleteSubjectInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteSubjectPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  subject: Subject
+  edge: SubjectEdge
+  deletedId: ID
+}
+
+"""HelloPayload"""
+type HelloPayload {
+  message: String!
+}
+
+input InvokeFunctionInput {
+  name: String!
+  input: String!
+  clientMutationId: String
+}
+
+type InvokeFunctionPayload {
+  result: String!
+  clientMutationId: String
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): CreatePostPayload
+  createSubject(input: CreateSubjectInput!): CreateSubjectPayload
+  updatePost(input: UpdatePostInput!): UpdatePostPayload
+  updateSubject(input: UpdateSubjectInput!): UpdateSubjectPayload
+  updateOrCreatePost(input: UpdateOrCreatePostInput!): UpdateOrCreatePostPayload
+  updateOrCreateSubject(input: UpdateOrCreateSubjectInput!): UpdateOrCreateSubjectPayload
+  deletePost(input: DeletePostInput!): DeletePostPayload
+  deleteSubject(input: DeleteSubjectInput!): DeleteSubjectPayload
+  addToSubjectsPosts(input: AddToSubjectsPostsSubjectInput!): AddToSubjectsPostsPayload
+  removeFromSubjectsPosts(input: RemoveFromSubjectsPostsSubjectInput!): RemoveFromSubjectsPostsPayload
+  invokeFunction(input: InvokeFunctionInput!): InvokeFunctionPayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Post implements Node {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  likes: Int
+  postedUnder(filter: SubjectFilter): Subject
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+
+  """Count of filtered result set without considering pagination arguments"""
+  count: Int!
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge."""
+  node: Post!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+input PostFilter {
+  """Logical AND on all given filters."""
+  AND: [PostFilter!]
+
+  """Logical OR on all given filters."""
+  OR: [PostFilter!]
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  likes: Int
+
+  """All values that are not equal to given value."""
+  likes_not: Int
+
+  """All values that are contained in given list."""
+  likes_in: [Int!]
+
+  """All values that are not contained in given list."""
+  likes_not_in: [Int!]
+
+  """All values less than the given value."""
+  likes_lt: Int
+
+  """All values less than or equal the given value."""
+  likes_lte: Int
+
+  """All values greater than the given value."""
+  likes_gt: Int
+
+  """All values greater than or equal the given value."""
+  likes_gte: Int
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  postedUnder: SubjectFilter
+}
+
+enum PostOrderBy {
+  content_ASC
+  content_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  likes_ASC
+  likes_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input PostpostedUnderSubject {
+  name: String!
+  postsIds: [ID!]
+  posts: [SubjectpostsPost!]
+}
+
+type Query {
+  viewer: Viewer!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type RemoveFromSubjectsPostsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  postedUnderSubject: Subject
+  postsPost: Post
+  postedUnderSubjectEdge: SubjectEdge
+  postsPostEdge: PostEdge
+}
+
+input RemoveFromSubjectsPostsSubjectInput {
+  postsPostId: ID!
+  postedUnderSubjectId: ID!
+  clientMutationId: String!
+}
+
+type Subject implements Node {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  posts(filter: PostFilter, orderBy: PostOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type SubjectConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SubjectEdge]
+
+  """Count of filtered result set without considering pagination arguments"""
+  count: Int!
+}
+
+"""An edge in a connection."""
+type SubjectEdge {
+  """The item at the end of the edge."""
+  node: Subject!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+input SubjectFilter {
+  """Logical AND on all given filters."""
+  AND: [SubjectFilter!]
+
+  """Logical OR on all given filters."""
+  OR: [SubjectFilter!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  posts_every: PostFilter
+  posts_some: PostFilter
+  posts_none: PostFilter
+}
+
+enum SubjectOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input SubjectpostsPost {
+  content: String!
+  likes: Int
+}
+
+input UpdateOrCreatePostInput {
+  update: UpdatePost!
+  create: CreatePost!
+  clientMutationId: String!
+}
+
+type UpdateOrCreatePostPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  post: Post
+  edge: PostEdge
+  postedUnder: Subject
+}
+
+input UpdateOrCreateSubjectInput {
+  update: UpdateSubject!
+  create: CreateSubject!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateSubjectPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  subject: Subject
+  edge: SubjectEdge
+}
+
+input UpdatePost {
+  content: String
+  id: ID!
+  likes: Int
+  postedUnderId: ID
+  postedUnder: PostpostedUnderSubject
+}
+
+input UpdatePostInput {
+  content: String
+  id: ID!
+  likes: Int
+  postedUnderId: ID
+  postedUnder: PostpostedUnderSubject
+  clientMutationId: String!
+}
+
+type UpdatePostPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  post: Post
+  edge: PostEdge
+  postedUnder: Subject
+}
+
+input UpdateSubject {
+  id: ID!
+  name: String
+  postsIds: [ID!]
+  posts: [SubjectpostsPost!]
+}
+
+input UpdateSubjectInput {
+  id: ID!
+  name: String
+  postsIds: [ID!]
+  posts: [SubjectpostsPost!]
+  clientMutationId: String!
+}
+
+type UpdateSubjectPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  subject: Subject
+  edge: SubjectEdge
+}
+
+"""This is the famous Relay viewer object"""
+type Viewer {
+  allPosts(filter: PostFilter, orderBy: PostOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  allSubjects(filter: SubjectFilter, orderBy: SubjectOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): SubjectConnection!
+  Post(id: ID): Post
+  Subject(id: ID, name: String): Subject
+
+  """hello"""
+  hello(name: String): HelloPayload
+  id: ID!
+}
+
